@@ -36,6 +36,7 @@ async function main() {
 
   );
   await lendingFactory.deployed();
+  // const positionId = await lendingFactory.totalPosition()
   console.log("total position", await lendingFactory.totalPosition());
   // console.log("balance of user", await provider.getBalance(deployerAddress));
   const tx = await lendingFactory.openPositionWithETH(
@@ -46,7 +47,13 @@ async function main() {
     , {
       value: "1000000000000000",
     });
+  const LendingPosition = await ethers.getContractFactory("LendingPosition");
+  // const positionAddress = (await lendingFactory.functions.lootboxAddress(0))[0];
+  // const lendingPosition = LendingPosition.attach(positionAddress);
+
   console.log(tx);
+  // console.log("position in WETH", lendingPosition.getCurrentPosition())
+  // console.log("amount TO repay", lendingPosition.getAmountToClosePositionInETH())
   const tx2 = await lendingFactory.openPositionWithETH(
     _dai,
     1,
