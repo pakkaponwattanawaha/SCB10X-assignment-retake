@@ -2,7 +2,7 @@ export const LENDING_POOL_ADDRESS_PROVIDER: { [chainId: number]: string } = {
     //mainnet
     1: "0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5",
     //Kovan
-    42: "0xA78AffBFF38e4ae9FD030C52D8eD8a6AFBda9a5D",
+    42: "0x88757f2f99175387aB4C6a4b3067c77A695b0349",
 }
 export const PRICE_ORACLE: { [chainId: number]: string } = {
     //mainnet
@@ -33,7 +33,7 @@ export const DAI: { [chainId: number]: string } = {
     //mainnet
     1: "0x6b175474e89094c44da98b954eedeac495271d0f",
     //Kovan
-    42: "0x628796a2d192b3c595CacF03ECaf1f51A78198e3",
+    42: "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD",
 }
 
 // export const UNISWAP_V2_FACTORY: { [chainId: number]: string } = {
