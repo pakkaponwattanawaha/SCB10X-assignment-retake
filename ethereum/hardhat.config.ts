@@ -45,7 +45,7 @@ export default {
       },
     },
     kovan: {
-      url: process.env.KOVAN_URL || "",
+      url: process.env.KOVAN_URL as string || "",
       chainId: 42,
       accounts: [process.env.PRIVATE_KEY],
     }
@@ -57,7 +57,6 @@ export default {
   etherscan: {
     apiKey: {
       kovan: process.env.ETHERSCAN_API_KEY,
-
     },
   },
 
