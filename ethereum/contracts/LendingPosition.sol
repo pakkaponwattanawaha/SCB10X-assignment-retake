@@ -13,8 +13,8 @@ import "./LendingFactory.sol";
 import "hardhat/console.sol";
 
 contract LendingPosition is Ownable {
-    // bool isRepay;
-    // bool isLiquidated; // check when try to repay if this address still own aWETH or what ever aave use
+    bool isClosed = false;
+    bool isLiquidated = false; // check when try to repay if this address still own aWETH or what ever aave use
 
     uint256 public amount;
     uint256 public borrowAmount;
@@ -23,8 +23,6 @@ contract LendingPosition is Ownable {
     uint256 public interestRateMode;
     uint16 public referralCode;
     uint256 public leveragePercentage;
-
-    uint256 public amountBorrowedSwapped;
 
     IWETH public wethToken;
 
@@ -61,20 +59,7 @@ contract LendingPosition is Ownable {
         wethToken = IWETH(_weth);
     }
 
-    // constructor(
-    //       address _tokenToBorrow,
-    //       uint256 _interestRateMode,
-    //       uint16 _referralCode,
-    //       uint256 _leveragePercentage,
-    //       address _lendingPoolAddressProvider,
-    //       address _weth
-    //   ) payable {}
-
-    function getWETH() public {
-        wethToken.deposit{value: (address(this).balance * 95) / 100}();
-    }
-
-    function performLeverageLend() public returns (uint256) {
+    function performLeverageLend() public onlyOwner returns (uint256) {
         // dont always use stuff from constructor
         wethToken.deposit{value: (address(this).balance * 95) / 100}();
         wethToken.approve(address(lendingPool), 2**256 - 1);
@@ -141,7 +126,7 @@ contract LendingPosition is Ownable {
         address[] memory path = new address[](2);
         path[0] = tokenToBorrow;
         path[1] = uniswapRouter.WETH();
-        //TRADE DAI -> ETH (bc kovan dont have DAI -> WETH)
+        //TRADE DAI -> ETH (bc kovan dont have DAI -> WETH ??)
         uniswapRouter.swapExactTokensForETHSupportingFeeOnTransferTokens(
             IERC20(tokenToBorrow).balanceOf(address(this)),
             0,
@@ -156,11 +141,19 @@ contract LendingPosition is Ownable {
             address(this).balance
         );
         positionPrice = daiPrice;
-        return wethToken.balanceOf(address(this)); //amount of current position
+
+        return address(this).balance; //amount of current position
     }
 
     function closePositionWithETH() public payable onlyOwner {
+        require(!isLiquidated, "position liquidated");
+        require(!isClosed, "position closed");
         (, uint256 totalDebtETH, , , , ) = getPositionData();
+        console.log(
+            "require block ",
+            totalDebtETH,
+            address(this).balance + msg.value
+        );
         console.log(
             "repay_amount",
             totalDebtETH,
@@ -168,18 +161,10 @@ contract LendingPosition is Ownable {
             wethToken.balanceOf(address(this))
         );
         uint256 daiPrice = priceOracle.getAssetPrice(tokenToBorrow);
-        // require(
-        //     totalDebtETH <= wethToken.balanceOf(address(this)) + msg.value,
+        // require(  // normally in mainnet we would need this but the rate in testnet make balance wierd
+        //     totalDebtETH <= (address(this).balance + msg.value),
         //     "need more ETH to close position"
         // );
-        // if (
-        //     totalDebtETH <=
-        //     (IERC20(tokenToBorrow).balanceOf(address(this)) * daiPrice)
-        // ) {
-        //     //dont swap
-        // } else {
-        //     //swap msg.value
-        // }
 
         //swap all weth to DAI (need to be more than borrow + fee)
         // wethToken.approve(
@@ -249,9 +234,26 @@ contract LendingPosition is Ownable {
             wethToken.balanceOf(address(this)),
             address(this).balance
         );
+        isClosed = true;
+        borrowAmount = 0;
+        positionPrice = 0;
     }
 
-    function getAdditionalETHToClosePosition() public {}
+    function getAdditionalETHToClosePosition() public returns (uint256) {
+        return (getTotalDebtETH() -
+            ((amount * leveragePercentage * 95) / 10000));
+    }
+
+    function liquidate_call() public {
+        isLiquidated = true;
+        lendingPool.liquidationCall(
+            address(wethToken),
+            tokenToBorrow,
+            address(this),
+            getTotalDebtETH(),
+            false
+        );
+    }
 
     function swapAllERC20ToETH(address _token) internal {
         uint256 TokenBalance = IERC20(_token).balanceOf(address(this));

@@ -43,22 +43,6 @@ contract LendingFactory is Ownable {
         console.log("Factory creation finish");
     }
 
-    function TestOnKovan() public returns (uint256) {
-        return wethToken.balanceOf(address(this));
-    }
-
-    function TestDeposit(
-        address _tokenToBorrow,
-        uint256 _interestRateMode,
-        uint16 _referralCode,
-        uint256 _leveragePercentage
-    ) external payable {
-        console.log("before require");
-        wethToken.deposit{value: address(this).balance}(); //mint weth to factory
-
-        //////here
-    }
-
     function openPositionWithETH(
         address _tokenToBorrow,
         uint256 _interestRateMode,
@@ -80,42 +64,10 @@ contract LendingFactory is Ownable {
             _lendingPoolAddressProvider,
             weth_address
         );
-        // require(
-        //     _leveragePercentage <= maxLeveragePercentage,
-        //     "ltv exceed accepted amount"
-        // );
-
-        //mint weth to factory
-
-        //////here
-
-        // wethToken.transfer(
-        //     address(position),
-        //     wethToken.balanceOf(address(this))
-        // );
-
-        // wethToken.approve(address(this), wethToken.balanceOf(address(this)));
-        // console.log(
-        //     "WETH balance",
-        //     address(this),
-        //     address(position),
-        //     wethToken.balanceOf(address(this))
-        // );
-
-        // console.log("balance of sender", msg.sender.balance);
-        // wethToken.transferFrom(
-        //     address(this),
-        //     address(position),
-        //     wethToken.balanceOf(address(this))
-        // ); // transfer all weth to position
-
-        // console.log(
-        //     "after transferFrom",
-        //     position.amount(),
-        //     position.leveragePercentage(),
-        //     wethToken.balanceOf(address(position))
-        // );
-        // wethToken.deposit{value: address(this).balance}();
+        require(
+            _leveragePercentage <= maxLeveragePercentage,
+            "ltv exceed accepted amount"
+        );
         position.performLeverageLend();
         position.transferOwnership(msg.sender);
         positionAddress[totalPosition] = address(position);
