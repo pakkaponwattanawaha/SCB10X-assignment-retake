@@ -47,8 +47,7 @@ contract LendingFactory is Ownable {
         address _tokenToBorrow,
         uint256 _interestRateMode,
         uint16 _referralCode,
-        uint256 _leveragePercentage,
-        address _lendingPoolAddressProvider
+        uint256 _leveragePercentage
     ) external payable {
         console.log("before require");
         require(
@@ -61,7 +60,7 @@ contract LendingFactory is Ownable {
             _interestRateMode,
             _referralCode,
             _leveragePercentage,
-            _lendingPoolAddressProvider,
+            lendingPoolAddressProvider,
             weth_address
         );
         require(
