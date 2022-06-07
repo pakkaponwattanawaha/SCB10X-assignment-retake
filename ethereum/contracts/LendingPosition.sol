@@ -13,8 +13,8 @@ import "./LendingFactory.sol";
 import "hardhat/console.sol";
 
 contract LendingPosition is Ownable {
-    bool isClosed = false;
-    bool isLiquidated = false; // check when try to repay if this address still own aWETH or what ever aave use
+    bool public isOpened = false;
+    bool public isLiquidated = false; // check when try to repay if this address still own aWETH or what ever aave use
 
     uint256 public amount;
     uint256 public borrowAmount;
@@ -60,6 +60,7 @@ contract LendingPosition is Ownable {
     }
 
     function performLeverageLend() public onlyOwner returns (uint256) {
+        require(isOpened == false, "already open position");
         // dont always use stuff from constructor
         wethToken.deposit{value: (address(this).balance * 95) / 100}();
         wethToken.approve(address(lendingPool), 2**256 - 1);
@@ -141,13 +142,13 @@ contract LendingPosition is Ownable {
             address(this).balance
         );
         positionPrice = daiPrice;
-
+        isOpened = true;
         return address(this).balance; //amount of current position
     }
 
     function closePositionWithETH() public payable onlyOwner {
         require(!isLiquidated, "position liquidated");
-        require(!isClosed, "position closed");
+        require(isOpened, "position closed");
         (, uint256 totalDebtETH, , , , ) = getPositionData();
         console.log(
             "require block ",
@@ -234,17 +235,17 @@ contract LendingPosition is Ownable {
             wethToken.balanceOf(address(this)),
             address(this).balance
         );
-        isClosed = true;
+        isOpened = false;
         borrowAmount = 0;
         positionPrice = 0;
     }
 
-    function getAdditionalETHToClosePosition() public returns (uint256) {
+    function getAdditionalETHToClosePosition() public view returns (uint256) {
         return (getTotalDebtETH() -
             ((amount * leveragePercentage * 95) / 10000));
     }
 
-    function liquidate_call() public {
+    function liquidation_call() public {
         isLiquidated = true;
         lendingPool.liquidationCall(
             address(wethToken),
