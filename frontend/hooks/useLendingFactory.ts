@@ -11,7 +11,7 @@ export const useLendingFactory = () => {
     const { enableWeb3, isWeb3Enabled, web3: moralisProvider, account } = useMoralis()
     const { fetchPosition, position } = useLendingPosition()
     const { chain } = useChain()
-    const [allPositionOpened, setAllPositionOpened] = useState<Number[]>([])
+    const [allPositionOpened, setAllPositionOpened] = useState<any | undefined>()
     const [allPidOpened, setAllPidOpened] = useState<Number[]>([])
 
     const { isLoading, onLoad, onDone } = useLoading()
@@ -23,7 +23,7 @@ export const useLendingFactory = () => {
             moralisProvider
         )
         const ids = (await factory.functions.getUserOpenedPosition(account))[0]
-        console.log(ids)
+        // console.log(ids)
         return ids
     }
     const getUserOpenedPosition = async (positionIds: number[]) => {
@@ -39,6 +39,7 @@ export const useLendingFactory = () => {
             const positionIds = await getUserOpenedPositionId()
             setAllPidOpened(positionIds)
             const positions = await getUserOpenedPosition(positionIds)
+            // console.log(positions)
             setAllPositionOpened(positions)
             onDone()
         }

@@ -19,3 +19,12 @@ export interface Position {
     leveragePercentage: number;
 
 }
+
+export interface PositionData {
+    totalCollateralETH: number,
+    totalDebtETH: number,
+    availableBorrowsETH: number,
+    currentLiquidationThreshold: number,
+    ltv: number,
+    healthFactor: number
+}
