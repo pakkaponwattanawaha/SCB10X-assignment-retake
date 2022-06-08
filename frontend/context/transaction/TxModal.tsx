@@ -17,7 +17,7 @@ export const TxModal = () => {
   useEffect(() => {
     const url =
       chain && isChainSupport(chain)
-        ? CHAINID_TO_DETAIL[chain.chainId].scan + hash
+        ? CHAINID_TO_DETAIL[chain.chainId].scan + "tx/" + hash
         : "http://wrong-chain/" + hash;
     setUrl(url);
   }, [hash, chain]);
@@ -48,7 +48,7 @@ export const TxModal = () => {
 
       {[TX_ACTION.INITIATED, TX_ACTION.PENDING].includes(stage) && (
         <div className="m-12">
-          <Loading size={40} spinnerColor="#E54090" />
+          <Loading size={40} spinnerColor="#0022EE" />
         </div>
       )}
 
@@ -60,7 +60,7 @@ export const TxModal = () => {
             <Illustration width={100} height={100} logo="confirmed" />
           )}
           <button
-            className="pt-5 underline text-mainPink"
+            className="pt-5 underline text-main1"
             onClick={() => openInNewTab(url)}
           >
             Transaction Hash: {shortenAddress(hash)}

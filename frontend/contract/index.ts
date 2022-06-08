@@ -105,7 +105,7 @@ export const CHAINID_TO_DETAIL: { [chainId: string]: CHAIN_DETAIL } = {
         src: "ethereum",
         icon: "eth",
         color: "#e7b527",
-        scan: "https://kovan.etherscan.io/tx/",
+        scan: "https://kovan.etherscan.io/",
         currency: "ETH",
     },
 
