@@ -24,7 +24,7 @@ const Home = () => {
   } = useMoralis();
   const { chain } = useChain();
   const [formData, setFormData] = useState<formDataType>(initialFormData);
-
+  const [balance, setBalance] = useState<number>();
   const { doTx, clearTx } = useTx();
 
   async function handleFormSumbit(e) {
@@ -66,6 +66,17 @@ const Home = () => {
       }
     });
   };
+  const getBalance = async () => {
+    const balance = moralisProvider
+      ? (await moralisProvider.getBalance(account)).toString()
+      : "0";
+    // console.log(balance);
+    setBalance(Number(ethers.utils.formatEther(balance)));
+  };
+
+  useEffect(() => {
+    if (account) getBalance();
+  }, [account]);
 
   useEffect(() => {
     if (isWeb3Enabled && chain) {
@@ -76,24 +87,28 @@ const Home = () => {
   }, [chain, isWeb3Enabled]);
 
   return (
-    <div className="w-0.8 p-16 grid justify-items-center ">
-      <div className="grid pl-16 w-full justify-items-start ">
-        <h2 className="text-[42px] font-bold">Leverage Lending </h2>
-      </div>
-      <div className="grid pl-16 pt-8 justify-items-start rounded-lg  w-full ">
-        <div className="w-3/4">
-          <form
-            onSubmit={(e) => handleFormSumbit(e)}
-            className="w-full max-w-lg"
-          >
-            <OpenPositionForm formData={formData} setFormData={setFormData} />
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    <div className="h-screen bg-gray-50 flex justify-center justify-items-center">
+      <div className="flex flex-col  items-center justify-items-center centered  rounded w-3/5  mt-10">
+        <h2 className="w-3/5 text-[42px] font-bold pb-3">Leverage Lending </h2>
+        <div className=" border w-3/5 bg-white justify-self-center shadow-xl rounded-xl p-5">
+          <div className="grid w-fit pt-3  rounded-lg  w-full px-16 py-3">
+            <form
+              onSubmit={(e) => handleFormSumbit(e)}
+              className="w-full max-w-lg"
             >
-              Submit
-            </button>
-          </form>
+              <OpenPositionForm
+                balance={balance}
+                formData={formData}
+                setFormData={setFormData}
+              />
+              <button
+                type="submit"
+                className="w-full bg-main1 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-5 rounded-2xl focus:outline-none focus:shadow-outline"
+              >
+                Submit
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
