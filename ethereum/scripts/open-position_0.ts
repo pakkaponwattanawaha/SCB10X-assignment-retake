@@ -11,7 +11,7 @@ async function main() {
     console.log("ChainId: ", chainId);
     let _lendingPoolAddressProvider, _dai, _weth, _uniswap;
     if (chainId == 31337) {
-        console.log("mainnet fork!")
+        console.log("mainnet fork!");
         _lendingPoolAddressProvider = LENDING_POOL_ADDRESS_PROVIDER[1];
         _dai = DAI[1];
         _weth = WETH[1];
@@ -61,7 +61,7 @@ async function main() {
 
     console.log("opened Position of ", deployerAddress);
     const positionAddress = await lendingFactory.getAddressFromPositionId(0);
-    console.log('position 0 at :', positionAddress)
+    console.log('position 0 at :', positionAddress);
 }
 
 main()
@@ -69,4 +69,4 @@ main()
     .catch((error) => {
         console.error(error)
         process.exit(1)
-    })
+    });
