@@ -15,6 +15,7 @@ import "hardhat/console.sol";
 contract LendingPosition is Ownable {
     bool public isOpened = false;
 
+    uint256 public pid;
     uint256 public amount;
     uint256 public borrowAmount;
     uint256 public positionPrice;
@@ -36,6 +37,7 @@ contract LendingPosition is Ownable {
     event closePosition(address indexed positionAddress, address owner);
 
     constructor(
+        uint256 _pid,
         address _tokenToBorrow,
         uint256 _interestRateMode,
         uint16 _referralCode,
@@ -44,6 +46,7 @@ contract LendingPosition is Ownable {
         address _weth
     ) payable {
         amount = msg.value;
+        pid = _pid;
         tokenToBorrow = _tokenToBorrow;
         interestRateMode = _interestRateMode;
         referralCode = _referralCode;

@@ -6,6 +6,7 @@ export interface formDataType {
     leveragePercentage: number
 }
 export interface Position {
+    pid: number,
     owner: string
     isOpened: boolean;
     isLiquidated: boolean;

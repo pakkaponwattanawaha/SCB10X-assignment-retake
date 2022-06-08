@@ -1,3 +1,11 @@
+import { abi as factoryAbi } from "./LendingFactory/LendingFactory.json"
+import { abi as lendingpositionAbi } from "./LendingPosition/LendingPosition.json"
+import { abi as priceOracleAbi } from "./interfaces/IPriceOracle.sol/IPriceOracle.json"
+
+export { priceOracleAbi as PRICEORACLE_ABI }
+export { factoryAbi as FACTORY_ABI }
+export { lendingpositionAbi as POSITION_ABI }
+
 export const LENDING_POOL_ADDRESS_PROVIDER: { [chainId: number]: string } = {
     //mainnet
     1: "0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5",
@@ -62,4 +70,43 @@ export const LENDING_POSITION_0: { [chainId: number]: string } = {
     1: "",
     //Kovan
     42: " 0xdEdd4918F46952Ae2DEA440d505a7E03689ad558",
+}
+export const SUPPORT_CHAINID = ["0x2a"]
+
+export const isChainSupport = (chain: any) => {
+    if (!chain || !chain.chainId) {
+        return false
+    }
+    if (!SUPPORT_CHAINID.includes(chain.chainId)) {
+        return false
+    }
+    return true
+}
+
+export enum CHAIN_SUPPORT {
+    "KOVAN" = "Ethereum Kovan",
+}
+
+interface CHAIN_DETAIL {
+    name: string
+    shortName: string
+    src: string
+    icon: string
+    color: string
+    scan: string
+    currency: string
+}
+
+export const CHAINID_TO_DETAIL: { [chainId: string]: CHAIN_DETAIL } = {
+
+    "0x2a": {
+        name: "Ethereum Kovan",
+        shortName: "Kovan",
+        src: "ethereum",
+        icon: "eth",
+        color: "#e7b527",
+        scan: "https://kovan.etherscan.io/tx/",
+        currency: "ETH",
+    },
+
 }

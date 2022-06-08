@@ -56,6 +56,7 @@ contract LendingFactory is Ownable {
         );
         console.log("before creating new position");
         LendingPosition position = new LendingPosition{value: msg.value}(
+            totalPosition,
             _tokenToBorrow,
             _interestRateMode,
             _referralCode,

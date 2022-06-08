@@ -4,7 +4,7 @@ import {
     POSITION_ABI,
     isChainSupport,
 } from "contract"
-import Router from "next/router"
+
 import { useMoralis, useChain } from "react-moralis"
 import { useState } from "react"
 import { ethers } from "ethers"
@@ -19,6 +19,7 @@ export const useLendingPosition = () => {
     const { isLoading, onLoad, onDone } = useLoading()
     const [position, setPosition] = useState<Position>(
         {
+            pid: 0,
             owner: ethers.constants.AddressZero,
             isOpened: false,
             isLiquidated: false,
@@ -47,6 +48,7 @@ export const useLendingPosition = () => {
 
         const positionContract = new ethers.Contract(positionAddress, POSITION_ABI, moralisProvider)
         const pos: Position = {
+            pid: (await positionContract.pid()).toString(),
             owner: (await positionContract.owner()).toString(),
             isOpened: (await positionContract.isOpened()).toString(),
             isLiquidated: (await positionContract.isLiquidated()).toString(),
