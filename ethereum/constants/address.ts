@@ -33,18 +33,33 @@ export const DAI: { [chainId: number]: string } = {
     //mainnet
     1: "0x6b175474e89094c44da98b954eedeac495271d0f",
     //Kovan
-    42: "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD",
+    42: "0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD", //(aave dai)
+
 }
 
-// export const UNISWAP_V2_FACTORY: { [chainId: number]: string } = {
-//     //mainnet
-//     1: "",
-//     //Kovan
-//     42: "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
-// }
 export const UNISWAP_V2_ROUTER: { [chainId: number]: string } = {
     //mainnet
     1: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
-    //Kovan
+    //Kovan (uniswap has low pool on aaveDAI => use DAI but use aaveDAI to get price from priceOracle)
     42: "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+}
+export const A_WETH: { [chainId: number]: string } = {
+    //mainnet
+    1: "",
+    //Kovan
+    42: "0x87b1f4cf9BD63f7BBD3eE1aD04E8F52540349347",
+}
+
+export const LENDING_FACTORY: { [chainId: number]: string } = {
+    //mainnet
+    1: "",
+    //Kovan
+    42: "0x7E71140C9Cae5aB8cA3DD93EB81a81Aa3C437431",
+}
+
+export const LENDING_POSITION_0: { [chainId: number]: string } = {
+    //mainnet
+    1: "",
+    //Kovan
+    42: " 0x3946607430ad78C177340eC290Ee06EcbdE30CcB",
 }

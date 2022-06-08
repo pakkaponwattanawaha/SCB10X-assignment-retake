@@ -14,7 +14,6 @@ import "hardhat/console.sol";
 
 contract LendingPosition is Ownable {
     bool public isOpened = false;
-    bool public isLiquidated = false; // check when try to repay if this address still own aWETH or what ever aave use
 
     uint256 public amount;
     uint256 public borrowAmount;
@@ -33,6 +32,8 @@ contract LendingPosition is Ownable {
     IUniswapV2Router02 public uniswapRouter;
 
     address factory;
+
+    event closePosition(address indexed positionAddress, address owner);
 
     constructor(
         address _tokenToBorrow,
@@ -147,7 +148,7 @@ contract LendingPosition is Ownable {
     }
 
     function closePositionWithETH() public payable onlyOwner {
-        require(!isLiquidated, "position liquidated");
+        require(!isLiquidated(), "position liquidated");
         require(isOpened, "position closed");
         (, uint256 totalDebtETH, , , , ) = getPositionData();
         console.log(
@@ -238,6 +239,7 @@ contract LendingPosition is Ownable {
         isOpened = false;
         borrowAmount = 0;
         positionPrice = 0;
+        emit closePosition(address(this), owner());
     }
 
     function getAdditionalETHToClosePosition() public view returns (uint256) {
@@ -245,15 +247,9 @@ contract LendingPosition is Ownable {
             ((amount * leveragePercentage * 95) / 10000));
     }
 
-    function liquidation_call() public {
-        isLiquidated = true;
-        lendingPool.liquidationCall(
-            address(wethToken),
-            tokenToBorrow,
-            address(this),
-            getTotalDebtETH(),
-            false
-        );
+    function isLiquidated() public view returns (bool) {
+        // Aave position is not closed by owner
+        return (borrowAmount > 0) && (getTotalDebtETH() == 0);
     }
 
     function swapAllERC20ToETH(address _token) internal {

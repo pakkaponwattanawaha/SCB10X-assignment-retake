@@ -41,9 +41,6 @@ async function main() {
     console.log("opened position 0", tx1);
 
 
-    // const LendingPosition = await ethers.getContractFactory("LendingPosition");
-    // const positionAddress = (await lendingFactory.functions.lootboxAddress(0))[0];
-    // const lendingPosition = LendingPosition.attach(positionAddress);
 
     // console.log("position in WETH", lendingPosition.getCurrentPosition())
 
