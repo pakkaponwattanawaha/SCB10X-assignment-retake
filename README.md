@@ -59,6 +59,7 @@ Deploy LendingFactory.sol with
  Then Update `LENDING_FACTORY` variable in ethereum/constant/address.ts to the deployed factory address
 
  Optional: 
+ 
  `npx hardhat run scripts/open-position_0.ts --network kovan`
 
  `npx hardhat run scripts/verify.ts --network kovan`
