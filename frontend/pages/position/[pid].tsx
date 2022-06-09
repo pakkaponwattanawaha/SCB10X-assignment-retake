@@ -144,11 +144,13 @@ const Pid: NextPage = () => {
       ? 0
       : numberToFixedDigit(
           (
-            (1 / daiPrice - 1 / position.positionPrice) *
+            ((10 ** 18 / daiPrice - 10 ** 18 / position.positionPrice) *
+              10 ** 18) /
             position.borrowAmount
           ).toString(),
           8
-        );
+        ); // delta ETH price * borrow DAI
+
   return (
     <div className="pt-[96px] h-screen mainBackground flex justify-center gap-2">
       <div className="centered  rounded w-1/2  mt-10">
