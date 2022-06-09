@@ -62,14 +62,14 @@ export const LENDING_FACTORY: { [chainId: number]: string } = {
     //mainnet
     1: "",
     //Kovan
-    42: "0xC19d3d48BcE197F92bA13d575A31DcD20D48FDa7",
+    42: "0x78E7a0d4Aa4e8f550c9D48fd5964eD64EEc4a5e7",
 }
 
 export const LENDING_POSITION_0: { [chainId: number]: string } = {
     //mainnet
     1: "",
     //Kovan
-    42: " 0xdEdd4918F46952Ae2DEA440d505a7E03689ad558",
+    42: " 0xE84e3F245d84d7Edd54De46350a67B043078c78d",
 }
 export const SUPPORT_CHAINID = ["0x2a"]
 
