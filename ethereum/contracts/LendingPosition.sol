@@ -140,22 +140,10 @@ contract LendingPosition is Ownable {
         require(!isLiquidated(), "position liquidated");
         require(isOpened, "position closed");
         (, uint256 totalDebtETH, , , , ) = getPositionData();
-        console.log(
-            "require block ",
-            totalDebtETH,
-            address(this).balance + msg.value
-        );
-        console.log(
-            "repay_amount",
-            totalDebtETH,
-            "WETH balance",
-            wethToken.balanceOf(address(this))
-        );
         uint256 daiPrice = priceOracle.getAssetPrice(tokenToBorrow);
 
         ///// Normally in mainnet we would need this
         ////  But the uniswap ETH <-> aave DAI rate in testnet make balance wierd
-
         // require(
         //     totalDebtETH <= (address(this).balance + msg.value),
         //     "need more ETH to close position"

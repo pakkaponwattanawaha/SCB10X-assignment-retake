@@ -28,7 +28,7 @@ const Home = () => {
   const { doTx, clearTx } = useTx();
 
   async function handleFormSumbit(e) {
-    console.log(formData, chain.chainId);
+    // console.log(formData, chain.chainId);
     e.preventDefault();
     await openPosition();
   }

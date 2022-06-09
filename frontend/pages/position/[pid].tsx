@@ -54,7 +54,7 @@ const Pid: NextPage = () => {
     const additionalAmount = (
       await positionContract.functions.getAdditionalETHToClosePosition()
     )[0].toString();
-    console.log(additionalAmount);
+    // console.log(additionalAmount);
     return additionalAmount;
   };
   const getPositionData = async () => {
@@ -73,7 +73,7 @@ const Pid: NextPage = () => {
       healthFactor: Number(positionData[5]),
     };
     setPositionData(ret);
-    console.log("positionData", ret);
+    // console.log("positionData", ret);
     return positionData;
   };
   const closePosition = async () => {
