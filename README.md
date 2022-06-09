@@ -1,5 +1,5 @@
 # SCB 10X Smart Contract Engineer Test
- - Deployment Url: https://scb-10x-assignment-retake.vercel.app/ or  https://twilight-boat-1987.on.fleek.co
+ - Deployment URL: https://scb-10x-assignment-retake.vercel.app/ or  https://twilight-boat-1987.on.fleek.co
                   
 ### Table of content
 
@@ -25,14 +25,14 @@
   - [Possible Improvements](#possible-improvements)
 # Smart Contract:
 ### Stack used 
-  - Development environment : hardhat
-  - Chain : Ethereum + solidity 
+  - Development environment : Hardhat
+  - Chain : Ethereum + Solidity 
   - Network : Ethereum Kovan, main-net fork
-  - testing : chai + ethers (testing still have timeout issue)
+  - testing : Chai + Ethers 
   - DEX : Uniswap
   - Lending protocol : Aave
   - Oracle : Aave Price Oracle
-  - Libraries : Openzeppelin , hardhat console
+  - Libraries : Openzeppelin , Hardhat console
   - Provider : Infura.io
   
 ### Design Pattern
@@ -72,7 +72,7 @@ Deploy LendingFactory.sol with
  Also update the same variable in frontend/contract/index.ts to make frontend connect with the deployed contract
 
 ### Testing
-- For testing we mainly use `chai`  
+- For testing we mainly use `chai` (testing still have timeout issue)
 - To test simply run
   `npx hardhat test`
   
@@ -82,8 +82,8 @@ Deploy LendingFactory.sol with
   - Framework : Next.js
   - Styling : Tailwind CSS
   - Provider: Moralis
-  - Library: ethers + web3uikit
-  - Deploying Environment: Vercel + fleek.co
+  - Library: Ethers + web3uikit
+  - Deploying Environment: Vercel + Fleek.co
   - https://scb-10x-assignment-retake.vercel.app/
   - https://twilight-boat-1987.on.fleek.co
 
