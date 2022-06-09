@@ -15,20 +15,20 @@ const Dashboard: NextPage = () => {
   const { allPositionOpened, isLoading } = useLendingFactory();
 
   return (
-    <div className="h-screen bg-gray-50 flex justify-center">
+    <div className="pt-[96px] h-screen mainBackground flex justify-center ">
       <div className="centered  rounded w-4/5  mt-10">
-        <h2 className="text-[42px] font-bold pb-3">Dashboard </h2>
+        <h2 className="text-[42px] font-bold  pb-3 text-white">Dashboard </h2>
         {isLoading ? (
           <Loading size={40} spinnerColor="#0022EE" />
         ) : (
-          <div className="border bg-white shadow-xl rounded p-5">
-            <div className="grid grid-cols-8 justify-items-center items-center font-bold gap-5 border-b px-3 pt-5 pb-3">
+          <div className="border bg-gray-50 shadow-xl rounded-xl p-5">
+            <div className="grid grid-cols-8 justify-items-center items-center font-bold gap-5 border-b border-gray-700 px-3 pt-5 pb-3 mb-3">
               <div>Asset</div>
               <div>Address</div>
               <div>Amount Deposit</div>
               <div>Amount Borrow</div>
               <div>Position Price</div>
-              <div>RateMode</div>
+              <div>Interest Rate Mode</div>
               <div>Status</div>
               <div>Percentage</div>
             </div>
@@ -37,7 +37,7 @@ const Dashboard: NextPage = () => {
                 return (
                   <Link key={idx} href={`/position/${position.pid}`}>
                     <div
-                      className=" grid grid-cols-8 justify-items-center gap-1 border rounded cursor-pointer px-3 py-5 hover:shadow-sm  hover:scale-[102%] transition duration-500"
+                      className=" grid grid-cols-8 justify-items-center gap-1 border border-gray-700 rounded-xl cursor-pointer px-3 py-5 hover:shadow-sm  hover:scale-[102%] transition duration-500"
                       key={idx}
                     >
                       <div>ETH</div>

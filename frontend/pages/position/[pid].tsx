@@ -45,6 +45,7 @@ const Pid: NextPage = () => {
     await closePosition();
   }
   const getAdditionalETHToClosePosition = async () => {
+    if (position.positionPrice > daiPrice) return 0;
     const positionContract = new ethers.Contract(
       position.address,
       POSITION_ABI,
@@ -81,7 +82,7 @@ const Pid: NextPage = () => {
       contractAddress: position.address,
       functionName: "closePositionWithETH",
       abi: POSITION_ABI,
-      msgValue: value, // get addition eth to close!
+      msgValue: value | 0, // get addition eth to close!
     };
     await doTx(sendOptions);
   };
@@ -149,14 +150,16 @@ const Pid: NextPage = () => {
           8
         );
   return (
-    <div className="h-screen bg-gray-50 flex justify-center gap-2">
+    <div className="pt-[96px] h-screen mainBackground flex justify-center gap-2">
       <div className="centered  rounded w-1/2  mt-10">
-        <h2 className="text-[42px] font-bold pb-3">Position Detail </h2>
+        <h2 className="text-[42px] font-bold pb-3 text-white">
+          Position Detail{" "}
+        </h2>
         <div>
           {isLoading ? (
             <Loading size={40} spinnerColor="#0022EE" />
           ) : (
-            <div className="border bg-white shadow-xl rounded-xl p-5">
+            <div className="border bg-gray-50 shadow-xl rounded-xl p-5">
               <div>
                 <h4 className="text-[24px] font-bold pb-3">Supply Info </h4>
                 <div className="cursor-pointer">
@@ -174,18 +177,25 @@ const Pid: NextPage = () => {
                     {shortenAddress(position.address)}
                   </a>
                 </div>
-                <div>Status :{statusFormatter(position)}</div>
+                <div>Status: {statusFormatter(position)}</div>
                 <div>Deposit Amount: {formatWei(position.amount)} ETH</div>
                 <div>
-                  Position Price:{" "}
+                  Position ETH Price:{" "}
                   {position.positionPrice == 0
                     ? 0
-                    : 10 ** 18 / position.positionPrice}
+                    : numberToFixedDigit(
+                        (10 ** 18 / position.positionPrice).toString(),
+                        3
+                      )}{" "}
+                  DAI
                 </div>
 
                 <h4 className="text-[24px] font-bold py-3">Borrow Info </h4>
                 <div>Borrow Amount: {formatWei(position.borrowAmount)} DAI</div>
-                <div>Current ETH price: {10 ** 18 / daiPrice}</div>
+                <div>
+                  Current ETH price:{" "}
+                  {numberToFixedDigit((10 ** 18 / daiPrice).toString(), 3)} DAI
+                </div>
                 <div>
                   Interest Rate Mode:{" "}
                   {position.interestRateMode === 1 ? "Fixed" : "Variable"}
@@ -216,7 +226,7 @@ const Pid: NextPage = () => {
       <div className="centered  rounded w-1/3  mt-10 pt-[75px]">
         <div>
           {!isLoading && positionData ? (
-            <div className="border bg-white shadow-xl rounded-xl p-5">
+            <div className="border bg-gray-50 shadow-xl rounded-xl p-5">
               <h4 className="text-[24px] font-bold pb-3">Aave Details </h4>
               <div>
                 Total Collateral:{formatWei(positionData.totalCollateralETH)}{" "}

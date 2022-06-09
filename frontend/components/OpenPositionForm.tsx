@@ -84,7 +84,7 @@ export const OpenPositionForm = ({
                 })
               }
               value={formData?.interestRateMode}
-              className="border border-gray-300 rounded-md text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
+              className="border border-gray-300 rounded-md text-gray-600 h-10 pl-5 pr-10 bg-gray-50 hover:border-gray-400 focus:outline-none appearance-none"
               required
             >
               <option disabled>Choose Interest Rate Mode</option>

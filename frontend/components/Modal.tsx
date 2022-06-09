@@ -1,11 +1,11 @@
 interface ModalProps {
-  open: boolean
-  onClose: () => void
-  title?: JSX.Element | string
-  content: JSX.Element | string
-  confirmButton?: JSX.Element
-  zIndex?: number
-  bgZIndex?: number
+  open: boolean;
+  onClose: () => void;
+  title?: JSX.Element | string;
+  content: JSX.Element | string;
+  confirmButton?: JSX.Element;
+  zIndex?: number;
+  bgZIndex?: number;
 }
 
 export const Modal = ({
@@ -28,7 +28,7 @@ export const Modal = ({
             }
           >
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
-              <div className="pt-4 border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+              <div className="pt-4 border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-50 outline-none focus:outline-none">
                 {title && (
                   <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                     <h3 className="text-3xl font-medium">{title}</h3>
@@ -53,9 +53,12 @@ export const Modal = ({
             </div>
           </div>
 
-          <div style={{ zIndex: bgZIndex }} className={"opacity-25 fixed inset-0 bg-black"}></div>
+          <div
+            style={{ zIndex: bgZIndex }}
+            className={"opacity-25 fixed inset-0 bg-black"}
+          ></div>
         </>
       ) : null}
     </>
-  )
-}
+  );
+};

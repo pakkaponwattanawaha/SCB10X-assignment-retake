@@ -87,14 +87,16 @@ const Home = () => {
   }, [chain, isWeb3Enabled]);
 
   return (
-    <div className="h-screen bg-gray-50 flex justify-center justify-items-center">
+    <div className="pt-[96px] h-screen mainBackground flex justify-center justify-items-center">
       <div className="flex flex-col  items-center justify-items-center centered  rounded w-3/5  mt-10">
-        <h2 className="w-3/5 text-[42px] font-bold pb-3">Leverage Lending </h2>
-        <div className=" border w-3/5 bg-white justify-self-center shadow-xl rounded-xl p-5">
+        <h2 className="w-3/5 text-[42px] font-bold pb-3 text-white">
+          Leverage Lending{" "}
+        </h2>
+        <div className=" border w-3/5 bg-gray-50 justify-self-center shadow-xl rounded-xl p-5">
           <div className="grid w-fit pt-3  rounded-lg  w-full px-16 py-3">
             <form
               onSubmit={(e) => handleFormSumbit(e)}
-              className="w-full max-w-lg"
+              className="w-full max-w-lg justify-self-center"
             >
               <OpenPositionForm
                 balance={balance}

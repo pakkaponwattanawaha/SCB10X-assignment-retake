@@ -17,3 +17,6 @@ a {
 * {
   box-sizing: border-box;
 }
+.mainBackground {
+  background: radial-gradient(circle, rgba(0,34,238,1) 0%, rgba(20,21,24,0.9794468812915791) 52%, rgba(7,9,48,0.926225592776173) 100%);
+}
