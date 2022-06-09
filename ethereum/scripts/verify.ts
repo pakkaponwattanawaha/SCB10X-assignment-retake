@@ -45,6 +45,7 @@ async function main() {
         await hre.run("verify:verify", {
             address: lendingPosition.address,
             constructorArguments: [
+                0,
                 _dai,
                 1,
                 0,
