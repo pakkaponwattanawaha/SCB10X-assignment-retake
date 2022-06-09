@@ -34,13 +34,11 @@ contract LendingFactory is Ownable {
         address _weth,
         address _uniswap
     ) {
-        console.log("Factory creation start");
         lendingPoolAddressProvider = _lendingPoolAddressProvider;
         dai_address = _dai;
         weth_address = _weth;
         uniswap_address = _uniswap;
         wethToken = IWETH(_weth);
-        console.log("Factory creation finish");
     }
 
     function openPositionWithETH(
@@ -49,7 +47,6 @@ contract LendingFactory is Ownable {
         uint16 _referralCode,
         uint256 _leveragePercentage
     ) external payable {
-        console.log("before require");
         require(
             _leveragePercentage <= maxLeveragePercentage,
             "ltv exceed accepted amount"
@@ -63,10 +60,6 @@ contract LendingFactory is Ownable {
             _leveragePercentage,
             lendingPoolAddressProvider,
             weth_address
-        );
-        require(
-            _leveragePercentage <= maxLeveragePercentage,
-            "ltv exceed accepted amount"
         );
         position.performLeverageLend();
         position.transferOwnership(msg.sender);

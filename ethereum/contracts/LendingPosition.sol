@@ -65,11 +65,8 @@ contract LendingPosition is Ownable {
 
     function performLeverageLend() public onlyOwner returns (uint256) {
         require(isOpened == false, "already open position");
-        // dont always use stuff from constructor
         wethToken.deposit{value: (address(this).balance * 95) / 100}();
         wethToken.approve(address(lendingPool), 2**256 - 1);
-
-        // console.log("inside leverageLend");
         uint256 daiPrice = priceOracle.getAssetPrice(tokenToBorrow);
 
         lendingPool.deposit(
@@ -85,12 +82,6 @@ contract LendingPosition is Ownable {
         //     borrowAmount <= (borrowableAmount * 10**18) / daiPrice,
         //     "insufficient amount to borrow"
         // );
-        // console.log(
-        //     "borrow and borrowable amount",
-        //     borrowAmount,
-        //     borrowableAmount,
-        //     totalDEBT
-        // );
 
         lendingPool.borrow(
             tokenToBorrow,
@@ -100,10 +91,6 @@ contract LendingPosition is Ownable {
             address(this)
         );
 
-        // console.log( //borrowed dai
-        //     "borrowed balance",
-        //     IERC20(tokenToBorrow).balanceOf(address(this))
-        // );
         (
             ,
             uint256 totalDEBT2,
@@ -131,7 +118,6 @@ contract LendingPosition is Ownable {
         address[] memory path = new address[](2);
         path[0] = tokenToBorrow;
         path[1] = uniswapRouter.WETH();
-        //TRADE DAI -> ETH (bc kovan dont have DAI -> WETH ??)
         uniswapRouter.swapExactTokensForETHSupportingFeeOnTransferTokens(
             IERC20(tokenToBorrow).balanceOf(address(this)),
             0,
@@ -166,15 +152,13 @@ contract LendingPosition is Ownable {
             wethToken.balanceOf(address(this))
         );
         uint256 daiPrice = priceOracle.getAssetPrice(tokenToBorrow);
-        // require(  // normally in mainnet we would need this but the rate in testnet make balance wierd
+
+        ///// Normally in mainnet we would need this
+        ////  But the uniswap ETH <-> aave DAI rate in testnet make balance wierd
+
+        // require(
         //     totalDebtETH <= (address(this).balance + msg.value),
         //     "need more ETH to close position"
-        // );
-
-        //swap all weth to DAI (need to be more than borrow + fee)
-        // wethToken.approve(
-        //     address(uniswapRouter),
-        //     wethToken.balanceOf(address(this))
         // );
 
         address[] memory path = new address[](2);
@@ -183,30 +167,20 @@ contract LendingPosition is Ownable {
         uniswapRouter.swapExactETHForTokensSupportingFeeOnTransferTokens{
             value: address(this).balance
         }(
-            // address(this).balance,
             0,
             path,
             address(this),
             block.timestamp + 60 //1 minute
         );
-        // console.log(
-        //     "already swap currentDAI : ",
-        //     IERC20(tokenToBorrow).balanceOf(address(this)),
-        //     "already swap currentWETH : ",
-        //     wethToken.balanceOf(address(this))
-        // );
-        // console.log("total borrow DAI", borrowAmount);
 
         IERC20(tokenToBorrow).approve(address(lendingPool), type(uint256).max);
 
-        // console.log("already approve dai");
         uint256 amount_repaid = lendingPool.repay(
             tokenToBorrow,
             type(uint256).max,
             interestRateMode,
             address(this)
         );
-        // cannot withdraw bc we didnot repay all debt + fee => need to be more than borrowed
         (
             uint256 totalCollateralETH4,
             uint256 totalDebtETH4,
@@ -216,29 +190,16 @@ contract LendingPosition is Ownable {
             uint256 healthFactor4
         ) = getPositionData();
 
-        console.log(
-            totalCollateralETH4,
-            totalDebtETH4,
-            availableBorrowsETH4,
-            healthFactor4
-        );
-
         uint256 amount_withdrawn = lendingPool.withdraw(
             address(wethToken),
             type(uint256).max,
             address(this)
         );
-        // console.log("already withdraw from aave");
+
         swapAllERC20ToETH(tokenToBorrow);
         withDrawAllWETH();
 
-        payable(msg.sender).transfer(address(this).balance); // user need get position address and call close from frontend
-        console.log(
-            "already swap currentDAI : ",
-            IERC20(tokenToBorrow).balanceOf(address(this)),
-            wethToken.balanceOf(address(this)),
-            address(this).balance
-        );
+        payable(msg.sender).transfer(address(this).balance);
         isOpened = false;
         borrowAmount = 0;
         positionPrice = 0;
@@ -251,7 +212,7 @@ contract LendingPosition is Ownable {
     }
 
     function isLiquidated() public view returns (bool) {
-        // Aave position is not closed by owner
+        // Aave position is close but by owner
         return (borrowAmount > 0) && (getTotalDebtETH() == 0);
     }
 
@@ -262,7 +223,6 @@ contract LendingPosition is Ownable {
             address[] memory path = new address[](2);
             path[0] = _token;
             path[1] = uniswapRouter.WETH();
-            // console.log(IERC20(_token).balanceOf(address(this)));
             uniswapRouter.swapExactTokensForETH(
                 TokenBalance,
                 0,
@@ -290,12 +250,6 @@ contract LendingPosition is Ownable {
         return wethToken.balanceOf(address(this)) + totalCollateralETH;
     }
 
-    // uint256 totalCollateralETH,
-    // uint256 totalDebtETH,
-    // uint256 availableBorrowsETH,
-    // uint256 currentLiquidationThreshold,
-    // uint256 ltv,
-    // uint256 healthFactor
     function getPositionData()
         public
         view
