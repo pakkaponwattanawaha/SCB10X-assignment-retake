@@ -77,7 +77,7 @@ describe("LendingFactory", function () {
             )
         console.log("after position 0")
         const receipt_0 = await tx_pos0.wait();
-        positionAddress_0 = await lendingFactory.positionAddress("0");
+        positionAddress_0 = await lendingFactory.getAddressFromPositionId("0");
         position_0 = await ethers.getContractAt("LendingPosition", positionAddress_0);
         console.log("Position 0 opened")
         console.log(await position_0.balance)
@@ -89,13 +89,12 @@ describe("LendingFactory", function () {
                 interestRateMode,
                 referralCode,
                 leveragePercentage_1,
-                _lendingPoolAddressProvider,
                 {
                     value: ethers.utils.parseEther("0.001"),
                 }
             )
         const receipt_1 = await tx_pos1.wait();
-        positionAddress_1 = await lendingFactory.positionAddress("1");
+        positionAddress_1 = await lendingFactory.getAddressFromPositionId("1");
         position_1 = await ethers.getContractAt("LendingPosition", positionAddress_1);
         console.log("Position 1 opened")
         setTimeout(done, 300000);
@@ -122,9 +121,12 @@ describe("LendingFactory", function () {
         })
     });
 
-    describe("position 0 balance", function () {
+    describe("position balance", function () {
         it("Position 0 WETH", async function () {
             expect(await position_0.balance).to.greaterThanOrEqual((await position_0.amount()) * 0.95 * (await position_0.leveragePercentage()) / 100);
+        })
+        it("Position 1 WETH", async function () {
+            expect(await position_0.balance).to.greaterThanOrEqual((await position_1.amount()) * 0.95 * (await position_1.leveragePercentage()) / 100);
         })
     });
 
@@ -141,6 +143,12 @@ describe("LendingFactory", function () {
                 )).to.equal(0);
             expect(
                 (await position_1.borrowAmount()
+                )).to.equal(0);
+            expect(
+                (await position_0.positionPrice()
+                )).to.equal(0);
+            expect(
+                (await position_1.positionPrice()
                 )).to.equal(0);
         })
     });
