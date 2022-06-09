@@ -15,7 +15,8 @@ export const numberToFixedDigit = (value: string, decimals: number) => {
 }
 export const formatWei = (wei: number) => {
     if (isNaN(wei)) return 0;
-    return numberToFixedDigit(ethers.utils.formatEther(wei).toString(), 6).toString();
+    const Ethers = ethers.utils.formatEther(wei.toString())
+    return numberToFixedDigit(Ethers.toString(), 6).toString();
 }
 export const statusFormatter = (position: any): string => {
     if (position.isLiquidated === "true") return "Liquidated";
