@@ -20,17 +20,20 @@
     - [Dashboard](#dashboard)
     - [Position Detail](#position-detail)
     - [Closing Position](#closing-position)
+  - [Additional features](#additional-features)
+  - [Possible Improvements](#possible-improvements)
 # Smart Contract:
 ### Stack used 
   - Development environment : hardhat
-  - network : Ethereum Koran, main-net fork
-  - EVM : Ethereum + solidity 
+  - Chain : Ethereum + solidity 
+  - Network : Ethereum Kovan, main-net fork
   - testing : chai + ethers (testing still have timeout issue)
   - DEX : Uniswap
-  - DeFi protocol : Aave
+  - Lending protocol : Aave
   - Oracle : Aave Price Oracle
-  - Library : Openzeppelin , hardhat console
+  - Libraries : Openzeppelin , hardhat console
   - Provider : Infura.io
+  
 ### Design Pattern
 
 The design of the smart contract we use the Factory and product design pattern mainly because ease of position management
@@ -135,7 +138,7 @@ Fleek.co  ` `
 - position is repaid and transfer back to user
 <img width="1440" alt="Screen Shot 2565-06-09 at 16 28 08" src="https://user-images.githubusercontent.com/54467698/172829292-f697f413-46f2-430c-b65b-82b60201fb72.png">
 
-# Additional feature from requirement
+# Additional features
  - (Bonus) able to close position and get 1.0x ETH back 
  - (Bonus) unit testing
  - variable lending rate (from 0 to 80% for ETH-DAI)
