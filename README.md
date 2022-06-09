@@ -1,5 +1,6 @@
 # SCB 10X Smart Contract Engineer Test
- - Deployment Url: https://scb-10x-assignment-retake.vercel.app/
+ - Deployment Url: https://scb-10x-assignment-retake.vercel.app/ or  https://twilight-boat-1987.on.fleek.co
+                  
 ### Table of content
 
    - [Smart Contract](#smart-contract)
@@ -82,8 +83,9 @@ Deploy LendingFactory.sol with
   - Styling : Tailwind CSS
   - Provider: Moralis
   - Library: ethers + web3uikit
-  - Deploying Environment: Vercel + fleek([fleek is down at the moment](https://forum.dfinity.org/t/is-the-network-down-for-anyone-else/13613))
+  - Deploying Environment: Vercel + fleek.co
   - https://scb-10x-assignment-retake.vercel.app/
+  - https://twilight-boat-1987.on.fleek.co
 
 ### How to run
 
@@ -101,7 +103,7 @@ Deploy LendingFactory.sol with
 
 Vercel `https://scb-10x-assignment-retake.vercel.app/`
 
-Fleek.co  ` `
+Fleek.co  `https://twilight-boat-1987.on.fleek.co`
 
 # Demo
 
