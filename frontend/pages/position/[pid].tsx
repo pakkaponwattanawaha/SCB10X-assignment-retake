@@ -144,9 +144,8 @@ const Pid: NextPage = () => {
       ? 0
       : numberToFixedDigit(
           (
-            ((10 ** 18 / daiPrice - 10 ** 18 / position.positionPrice) *
-              10 ** 18) /
-            position.borrowAmount
+            (10 ** 18 / daiPrice / (10 ** 18 / position.positionPrice) - 1) *
+            (position.borrowAmount / 10 ** 18)
           ).toString(),
           8
         ); // delta ETH price * borrow DAI
